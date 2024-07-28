@@ -37,7 +37,6 @@ app.index_string = '''
 
 # layout of the app
 app.layout = html.Div([
-    # App Title with Image
     html.Div([
         html.Div([
             html.H1("Pytank View", style={
@@ -299,9 +298,6 @@ app.layout = html.Div([
                             'boxSizing': 'border-box',
                             # 'backgroundColor': '#2172F9'
                         }),
-
-                        # Add your Fluid Models layout here
-                        # Example:
                         html.Label("Upload Fluid Models CSV"),
                         dcc.Upload(
                             id='upload-fluid-data',
@@ -463,9 +459,6 @@ app.layout = html.Div([
                                 'boxSizing': 'border-box',
                                 # 'backgroundColor': '#2172F9'
                             }),
-
-                            # Add your Tank layout here
-                            # Example:
                             html.Div([
                                 html.Label("Tank name"),
                                 dcc.Input(
@@ -702,7 +695,6 @@ app.layout = html.Div([
                             ], style={'textAlign': 'center',
                                       'marginTop': '10px',
                                       'marginBottom': '80px'}),
-                            # Continue with other components as needed
                         ], style={
                             'width': '20%',
                             'padding': '20px',
@@ -783,8 +775,6 @@ app.layout = html.Div([
                                             'boxSizing': 'border-box',
                                             '#backgroundColor': '#2172F9'
                                         }),
-                                # Add your Tank layout here
-                                # Example:
                                 html.Label("Analysis frequency"),
                                 dcc.Dropdown(
                                     id='freq-analysis',
@@ -1091,7 +1081,6 @@ app.layout = html.Div([
                                           'flexDirection': 'column',
                                           'justifyContent': 'space-between'
                                           }),
-                                # Continue with other components as needed
                             ], style={
                                 'width': '20%',
                                 'padding': '20px',
@@ -1427,7 +1416,7 @@ def update_output_well(n_clicks, prod_content, press_content, freq_prod,
                                     'size': 18,
                                     'family': 'Arial, sans-serif',
                                     'color': 'black',
-                                    'weight': 'bold'  # Font weight to bold
+                                    'weight': 'bold'
                                 }
                             },
                             'xaxis': {'title': 'Date',
@@ -1437,6 +1426,8 @@ def update_output_well(n_clicks, prod_content, press_content, freq_prod,
                                                    'family': 'Arial, sans-serif'},
                                       'showgrid': True,
                                       'gridcolor': '#D1D1D1',
+                                      'gridwidth': 1,
+                                      'griddash': 'dash',
                                       'linecolor': 'black',
                                       'mirror': True,
                                       'type': 'date'
@@ -1448,6 +1439,8 @@ def update_output_well(n_clicks, prod_content, press_content, freq_prod,
                                                    'family': 'Arial, sans-serif'},
                                       'showgrid': True,
                                       'gridcolor': '#D1D1D1',
+                                      'gridwidth': 1,
+                                      'griddash': 'dash',
                                       'linecolor': 'black',
                                       'mirror': True
                                       },
@@ -1490,7 +1483,7 @@ def update_output_well(n_clicks, prod_content, press_content, freq_prod,
                                     'size': 18,
                                     'family': 'Arial, sans-serif',
                                     'color': 'black',
-                                    'weight': 'bold'  # Font weight to bold
+                                    'weight': 'bold'
                                 }
                             },
                             'xaxis': {'title': 'Date',
@@ -1500,6 +1493,8 @@ def update_output_well(n_clicks, prod_content, press_content, freq_prod,
                                                    'family': 'Arial, sans-serif'},
                                       'showgrid': True,
                                       'gridcolor': '#D1D1D1',
+                                      'gridwidth': 1,
+                                      'griddash': 'dash',
                                       'linecolor': 'black',
                                       'mirror': True,
                                       'type': 'date'
@@ -1511,6 +1506,8 @@ def update_output_well(n_clicks, prod_content, press_content, freq_prod,
                                                    'family': 'Arial, sans-serif'},
                                       'showgrid': True,
                                       'gridcolor': '#D1D1D1',
+                                      'gridwidth': 1,
+                                      'griddash': 'dash',
                                       'linecolor': 'black',
                                       'mirror': True
                                       },
@@ -1542,6 +1539,21 @@ def update_output_well(n_clicks, prod_content, press_content, freq_prod,
             well_info_display.append(
                 dbc.Row(row_layout)
             )
+
+            found_wells = [well.name for well in global_wells_info]
+            not_found_wells = [well_name for well_name in my_wells if
+                               well_name not in found_wells]
+
+            if not_found_wells:
+                well_info_display.append(
+                    dbc.Alert(
+                        f"The following wells were not found: {', '.join(not_found_wells)}. Check the name carefully.",
+                        color="warning",
+                        dismissable=True,
+                        is_open=True,
+                        style={'margin-top': '20px'}
+                    )
+                )
 
         return well_info_display if well_info_display else [
             html.P("No well data available.")]
@@ -2068,6 +2080,8 @@ def display_analysis_data(n_clicks,
                     tickfont=dict(size=14, family='Arial, sans-serif'),
                     showgrid=True,
                     gridcolor='#D1D1D1',
+                    gridwidth=1,
+                    griddash='dash',
                     linecolor='black',
                     mirror=True
                 ),
@@ -2077,6 +2091,8 @@ def display_analysis_data(n_clicks,
                     tickfont=dict(size=14, family='Arial, sans-serif'),
                     showgrid=True,
                     gridcolor='#D1D1D1',
+                    gridwidth=1,
+                    griddash='dash',
                     linecolor='black',
                     mirror=True
                 ),
@@ -2088,9 +2104,6 @@ def display_analysis_data(n_clicks,
                         text="Graph that gives an<br>idea of the energy<br>"
                              "contribution of an aquifer",
                         showarrow=True,
-                        #arrowhead=2,
-                        #ax=0,
-                        #ay=-40,
                         font=dict(size=12, color='black'),
                         bgcolor='grey',
                         bordercolor='black'
@@ -2135,6 +2148,8 @@ def display_analysis_data(n_clicks,
                     tickfont=dict(size=14, family='Arial, sans-serif'),
                     showgrid=True,
                     gridcolor='#D1D1D1',
+                    gridwidth=1,
+                    griddash='dash',
                     linecolor='black',
                     mirror=True
                 ),
@@ -2144,6 +2159,8 @@ def display_analysis_data(n_clicks,
                     tickfont=dict(size=14, family='Arial, sans-serif'),
                     showgrid=True,
                     gridcolor='#D1D1D1',
+                    gridwidth=1,
+                    griddash='dash',
                     linecolor='black',
                     mirror=True
                 ),
@@ -2155,9 +2172,6 @@ def display_analysis_data(n_clicks,
                         text="Graph that gives an<br>idea of the energy"
                              "<br>contribution of an aquifer",
                         showarrow=True,
-                        #arrowhead=2,
-                        # ax=0,
-                        # ay=-40,
                         font=dict(size=12, color='black'),
                         bgcolor='skyblue',
                         bordercolor='black'
@@ -2211,6 +2225,8 @@ def display_analysis_data(n_clicks,
                     tickfont=dict(size=14, family='Arial, sans-serif'),
                     showgrid=True,
                     gridcolor='#D1D1D1',
+                    gridwidth=1,
+                    griddash='dash',
                     linecolor='black',
                     mirror=True
                 ),
@@ -2220,6 +2236,8 @@ def display_analysis_data(n_clicks,
                     tickfont=dict(size=14, family='Arial, sans-serif'),
                     showgrid=True,
                     gridcolor='#D1D1D1',
+                    gridwidth=1,
+                    griddash='dash',
                     linecolor='black',
                     mirror=True
                 ),
@@ -2230,9 +2248,6 @@ def display_analysis_data(n_clicks,
                         y=data["F-We"].max(),
                         text="N [MMStb]: {:.2f}".format(slope / 1000000),
                         showarrow=True,
-                        #arrowhead=2,
-                        #ax=0,
-                        #ay=-40,
                         font=dict(size=12, color='black'),
                         bgcolor='yellow',
                         bordercolor='black'
@@ -2277,6 +2292,8 @@ def display_analysis_data(n_clicks,
                     tickfont=dict(size=14, family='Arial, sans-serif'),
                     showgrid=True,
                     gridcolor='#D1D1D1',
+                    gridwidth=1,
+                    griddash='dash',
                     linecolor='black',
                     mirror=True
                 ),
@@ -2286,6 +2303,8 @@ def display_analysis_data(n_clicks,
                     tickfont=dict(size=14, family='Arial, sans-serif'),
                     showgrid=True,
                     gridcolor='#D1D1D1',
+                    gridwidth=1,
+                    griddash='dash',
                     linecolor='black',
                     mirror=True
                 ),
@@ -2295,10 +2314,6 @@ def display_analysis_data(n_clicks,
                         x=data["Eo+Efw"].min(),
                         y=data["F-We"].max(),
                         text="N [MMStb]: {:.2f}".format(slope / 1000000),
-                        #showarrow=True,
-                        #arrowhead=2,
-                        #ax=3,
-                        #ay=-40,
                         font=dict(size=12, color='black'),
                         bgcolor='yellow',
                         bordercolor='black'
@@ -2343,6 +2358,8 @@ def display_analysis_data(n_clicks,
                 showgrid=True,
                 gridcolor='#D1D1D1',
                 linecolor='black',
+                gridwidth=1,
+                griddash='dash',
                 mirror=True,
                 type='date'
             ),
@@ -2352,6 +2369,8 @@ def display_analysis_data(n_clicks,
                 tickfont=dict(size=14, family='Arial, sans-serif'),
                 showgrid=True,
                 gridcolor='#D1D1D1',
+                gridwidth=1,
+                griddash='dash',
                 linecolor='black',
                 mirror=True
             ),
@@ -2371,7 +2390,6 @@ def display_analysis_data(n_clicks,
             ]
         )
         "-------------------- Avg Pressure vs Time ------------------------"
-        # Average Pressure Data
         # Average Pressure Data
         df_press_avg = global_analysis.mat_bal_df()
         df_press_avg['START_DATETIME'] = pd.to_datetime(
@@ -2415,6 +2433,8 @@ def display_analysis_data(n_clicks,
                 tickfont=dict(size=14, family='Arial, sans-serif'),
                 showgrid=True,
                 gridcolor='#D1D1D1',
+                gridwidth=1,
+                griddash='dash',
                 linecolor='black',
                 mirror=True,
                 type='date'
@@ -2425,6 +2445,8 @@ def display_analysis_data(n_clicks,
                 tickfont=dict(size=14, family='Arial, sans-serif'),
                 showgrid=True,
                 gridcolor='#D1D1D1',
+                gridwidth=1,
+                griddash='dash',
                 linecolor='black',
                 mirror=True
             ),
@@ -2481,6 +2503,8 @@ def display_analysis_data(n_clicks,
                 tickfont=dict(size=14, family='Arial, sans-serif'),
                 showgrid=True,
                 gridcolor='#D1D1D1',
+                gridwidth=1,
+                griddash='dash',
                 linecolor='black',
                 mirror=True,
                 type='date'
@@ -2491,6 +2515,8 @@ def display_analysis_data(n_clicks,
                 tickfont=dict(size=14, family='Arial, sans-serif'),
                 showgrid=True,
                 gridcolor='#D1D1D1',
+                gridwidth=1,
+                griddash='dash',
                 linecolor='black',
                 mirror=True
             ),
@@ -2542,6 +2568,8 @@ def display_analysis_data(n_clicks,
                 tickfont=dict(size=14, family='Arial, sans-serif'),
                 showgrid=True,
                 gridcolor='#D1D1D1',
+                gridwidth=1,
+                griddash='dash',
                 linecolor='black',
                 mirror=True
             ),
@@ -2551,6 +2579,8 @@ def display_analysis_data(n_clicks,
                 tickfont=dict(size=14, family='Arial, sans-serif'),
                 showgrid=True,
                 gridcolor='#D1D1D1',
+                gridwidth=1,
+                griddash='dash',
                 linecolor='black',
                 mirror=True
             ),
@@ -2602,6 +2632,8 @@ def display_analysis_data(n_clicks,
                 tickfont=dict(size=14, family='Arial, sans-serif'),
                 showgrid=True,
                 gridcolor='#D1D1D1',
+                gridwidth=1,
+                griddash='dash',
                 linecolor='black',
                 mirror=True,
                 type='date'
@@ -2675,6 +2707,8 @@ def display_analysis_data(n_clicks,
                 tickfont=dict(size=14, family='Arial, sans-serif'),
                 showgrid=True,
                 gridcolor='#D1D1D1',
+                gridwidth=1,
+                griddash='dash',
                 linecolor='black',
                 mirror=True,
                 type='date'
@@ -2685,6 +2719,8 @@ def display_analysis_data(n_clicks,
                 tickfont=dict(size=14, family='Arial, sans-serif'),
                 showgrid=True,
                 gridcolor='#D1D1D1',
+                gridwidth=1,
+                griddash='dash',
                 linecolor='black',
                 mirror=True
             ),
@@ -2747,6 +2783,8 @@ def display_analysis_data(n_clicks,
                 tickfont=dict(size=14, family='Arial, sans-serif'),
                 showgrid=True,
                 gridcolor='#D1D1D1',
+                gridwidth=1,
+                griddash='dash',
                 linecolor='black',
                 mirror=True
             ),
@@ -2756,6 +2794,8 @@ def display_analysis_data(n_clicks,
                 tickfont=dict(size=14, family='Arial, sans-serif'),
                 showgrid=True,
                 gridcolor='#D1D1D1',
+                gridwidth=1,
+                griddash='dash',
                 linecolor='black',
                 mirror=True
             ),
@@ -2810,6 +2850,8 @@ def display_analysis_data(n_clicks,
                     tickfont=dict(size=14, family='Arial, sans-serif'),
                     showgrid=True,
                     gridcolor='#D1D1D1',
+                    gridwidth=1,
+                    griddash='dash',
                     linecolor='black',
                     mirror=True,
                     type='date'
@@ -2820,6 +2862,8 @@ def display_analysis_data(n_clicks,
                     tickfont=dict(size=14, family='Arial, sans-serif'),
                     showgrid=True,
                     gridcolor='#D1D1D1',
+                    gridwidth=1,
+                    griddash='dash',
                     linecolor='black',
                     mirror=True,
                     range=[0, 4000]
