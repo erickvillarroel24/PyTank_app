@@ -806,7 +806,7 @@ app.layout = html.Div([
                                         {'label': 'middle', 'value': 'middle'},
                                         {'label': 'end', 'value': 'end'},
                                     ],
-                                    placeholder='Select position',
+                                    placeholder='Position of the month according to frequency',
                                     style={'width': '100%'}
                                 ),
                                 html.Div(style={'height': '10px'}),
@@ -1118,12 +1118,14 @@ app.layout = html.Div([
                                     " Campbell, Havlena an Odeh and real and "
                                     "synthetic pressures to be able to "
                                     "calculate reserves using the graphical "
-                                    "and analytical method.\nInstructions:",
+                                    "and analytical method. In addition, it "
+                                    "shows graphs that describe the behavior "
+                                    "of the tank or reservoir. Instructions:",
                                     style={
                                         'fontSize': '16px',
                                         'lineHeight': '1.5',
                                         'textAlign': 'justify',
-                                        'marginBottom': '20px'
+                                        'marginBottom': '10px'
                                     }
                                 ),
                                 html.Div(
@@ -1151,14 +1153,14 @@ app.layout = html.Div([
                                         html.Div([
                                             "Instruction 2: It is advisable to select 'No' in ",
                                             html.Span(
-                                                "Campbell custom",
+                                                "Campbell (custom line)",
                                                 style={
                                                     'fontStyle': 'italic',
                                                     'fontWeight': 'bold'
                                                 }
                                             ), " and ",
                                             html.Span(
-                                                "Havlena custom",
+                                                "Havlena (custom line)",
                                                 style={
                                                     'fontStyle': 'italic',
                                                     'fontWeight': 'bold'
@@ -1201,8 +1203,7 @@ app.layout = html.Div([
                                     id='analysis-info-content',
                                     style={
                                         'overflowY': 'auto',
-                                        'maxHeight': '100vh',
-                                        'padding': '10px'
+                                        'height': '150vh',
                                     }
                                 )
                             ], id='analysis-results', style={
@@ -1210,7 +1211,7 @@ app.layout = html.Div([
                                 'padding': '20px',
                                 'boxSizing': 'border-box',
                                 'height': '100vh',
-                                'overflowY': 'auto'
+                                'overflowY': 'hidden'
                             }),
                         ], style={
                             'display': 'flex',
@@ -1420,16 +1421,43 @@ def update_output_well(n_clicks, prod_content, press_content, freq_prod,
                             if col in prod_data_df.columns
                         ],
                         'layout': {
-                            'title': 'Production Data',
-                            'xaxis': {'title': 'Date'},
-                            'yaxis': {'title': 'Production [PSI]'},
+                            'title': {
+                                'text': 'Production vs Time',
+                                'font': {
+                                    'size': 18,
+                                    'family': 'Arial, sans-serif',
+                                    'color': 'black',
+                                    'weight': 'bold'  # Font weight to bold
+                                }
+                            },
+                            'xaxis': {'title': 'Date',
+                                      'titlefont': {'size': 14,
+                                                    'family': 'Arial, sans-serif'},
+                                      'tickfont': {'size': 12,
+                                                   'family': 'Arial, sans-serif'},
+                                      'showgrid': True,
+                                      'gridcolor': '#D1D1D1',
+                                      'linecolor': 'black',
+                                      'mirror': True,
+                                      'type': 'date'
+                                      },
+                            'yaxis': {'title': 'Production [BBL]',
+                                      'titlefont': {'size': 14,
+                                                    'family': 'Arial, sans-serif'},
+                                      'tickfont': {'size': 12,
+                                                   'family': 'Arial, sans-serif'},
+                                      'showgrid': True,
+                                      'gridcolor': '#D1D1D1',
+                                      'linecolor': 'black',
+                                      'mirror': True
+                                      },
+                            'template': 'plotly_white',
                         }
                     }
                 )
                 row_layout.append(
                     dbc.Col(
                         html.Div([
-                            html.H5("Production Data"),
                             prod_graph
                         ]),
                         width=6
@@ -1439,7 +1467,6 @@ def update_output_well(n_clicks, prod_content, press_content, freq_prod,
                 row_layout.append(
                     dbc.Col(
                         html.Div([
-                            html.H5("Production Data"),
                             html.P("No production data available.")
                         ]),
                         width=6
@@ -1457,18 +1484,46 @@ def update_output_well(n_clicks, prod_content, press_content, freq_prod,
                             for col in press_data_df.columns
                         ],
                         'layout': {
-                            'title': 'Pressure Data',
-                            'xaxis': {'title': 'Date'},
-                            'yaxis': {'title': 'Pressure [PSI]'}
+                            'title': {
+                                'text': 'Pressure vs Time',
+                                'font': {
+                                    'size': 18,
+                                    'family': 'Arial, sans-serif',
+                                    'color': 'black',
+                                    'weight': 'bold'  # Font weight to bold
+                                }
+                            },
+                            'xaxis': {'title': 'Date',
+                                      'titlefont': {'size': 14,
+                                                    'family': 'Arial, sans-serif'},
+                                      'tickfont': {'size': 12,
+                                                   'family': 'Arial, sans-serif'},
+                                      'showgrid': True,
+                                      'gridcolor': '#D1D1D1',
+                                      'linecolor': 'black',
+                                      'mirror': True,
+                                      'type': 'date'
+                                      },
+                            'yaxis': {'title': 'Pressure [PSI]',
+                                      'titlefont': {'size': 14,
+                                                    'family': 'Arial, sans-serif'},
+                                      'tickfont': {'size': 12,
+                                                   'family': 'Arial, sans-serif'},
+                                      'showgrid': True,
+                                      'gridcolor': '#D1D1D1',
+                                      'linecolor': 'black',
+                                      'mirror': True
+                                      },
+                            'template': 'plotly_white',
                         }
                     }
                 )
                 row_layout.append(
                     dbc.Col(
                         html.Div([
-                            html.H5("Pressure Data"),
                             press_graph
-                        ]),
+                        ]
+                        ),
                         width=6
                     )
                 )
@@ -1477,7 +1532,6 @@ def update_output_well(n_clicks, prod_content, press_content, freq_prod,
                     row_layout.append(
                         dbc.Col(
                             html.Div([
-                                html.H5("Pressure Data"),
                                 html.P("No pressure data available.")
                             ]),
                             width=6
@@ -2008,8 +2062,24 @@ def display_analysis_data(n_clicks,
 
             fig_campbell.update_layout(
                 title='Campbell Graph',
-                xaxis_title='Np Cumulative Oil Production [MMStb]',
-                yaxis_title='F/Eo+Efw',
+                xaxis=dict(
+                    title='Np Cumulative Oil Production [MMStb]',
+                    titlefont=dict(size=18, family='Arial, sans-serif'),
+                    tickfont=dict(size=14, family='Arial, sans-serif'),
+                    showgrid=True,
+                    gridcolor='#D1D1D1',
+                    linecolor='black',
+                    mirror=True
+                ),
+                yaxis=dict(
+                    title='F/Eo+Efw',
+                    titlefont=dict(size=18, family='Arial, sans-serif'),
+                    tickfont=dict(size=14, family='Arial, sans-serif'),
+                    showgrid=True,
+                    gridcolor='#D1D1D1',
+                    linecolor='black',
+                    mirror=True
+                ),
                 template='plotly_white',
                 annotations=[
                     go.layout.Annotation(
@@ -2018,9 +2088,9 @@ def display_analysis_data(n_clicks,
                         text="Graph that gives an<br>idea of the energy<br>"
                              "contribution of an aquifer",
                         showarrow=True,
-                        arrowhead=2,
-                        ax=0,
-                        ay=-40,
+                        #arrowhead=2,
+                        #ax=0,
+                        #ay=-40,
                         font=dict(size=12, color='black'),
                         bgcolor='grey',
                         bordercolor='black'
@@ -2031,7 +2101,7 @@ def display_analysis_data(n_clicks,
                         yref="paper",
                         x=0.5,
                         xanchor="center",
-                        y=1.05,
+                        y=1.15,
                         yanchor="top",
                         showarrow=False,
                         font=dict(size=22)
@@ -2059,8 +2129,24 @@ def display_analysis_data(n_clicks,
 
             fig_campbell.update_layout(
                 title='Campbell Graph',
-                xaxis_title='Np Cumulative Oil Production [MMStb]',
-                yaxis_title='F/Eo+Efw',
+                xaxis=dict(
+                    title='Np Cumulative Oil Production [MMStb]',
+                    titlefont=dict(size=18, family='Arial, sans-serif'),
+                    tickfont=dict(size=14, family='Arial, sans-serif'),
+                    showgrid=True,
+                    gridcolor='#D1D1D1',
+                    linecolor='black',
+                    mirror=True
+                ),
+                yaxis=dict(
+                    title='F/Eo+Efw',
+                    titlefont=dict(size=18, family='Arial, sans-serif'),
+                    tickfont=dict(size=14, family='Arial, sans-serif'),
+                    showgrid=True,
+                    gridcolor='#D1D1D1',
+                    linecolor='black',
+                    mirror=True
+                ),
                 template='plotly_white',
                 annotations=[
                     go.layout.Annotation(
@@ -2069,11 +2155,11 @@ def display_analysis_data(n_clicks,
                         text="Graph that gives an<br>idea of the energy"
                              "<br>contribution of an aquifer",
                         showarrow=True,
-                        arrowhead=2,
-                        ax=0,
-                        ay=-40,
+                        #arrowhead=2,
+                        # ax=0,
+                        # ay=-40,
                         font=dict(size=12, color='black'),
-                        bgcolor='grey',
+                        bgcolor='skyblue',
                         bordercolor='black'
                     ),
                     go.layout.Annotation(
@@ -2082,20 +2168,13 @@ def display_analysis_data(n_clicks,
                         yref="paper",
                         x=0.5,
                         xanchor="center",
-                        y=1.05,
+                        y=1.15,
                         yanchor="top",
                         showarrow=False,
                         font=dict(size=22)
                     )
                 ]
             )
-            fig_campbell.add_trace(go.Scatter(
-                x=data2["Np"],
-                y=data2["F/Eo+Efw"],
-                mode='markers',
-                marker=dict(color='blue', size=10),
-                name='Data Points'
-            ))
 
         '---------------------- Havlena and Odeh --------------------------'
         # Havlena Plot
@@ -2131,7 +2210,7 @@ def display_analysis_data(n_clicks,
                     titlefont=dict(size=18, family='Arial, sans-serif'),
                     tickfont=dict(size=14, family='Arial, sans-serif'),
                     showgrid=True,
-                    gridcolor='grey',
+                    gridcolor='#D1D1D1',
                     linecolor='black',
                     mirror=True
                 ),
@@ -2140,7 +2219,7 @@ def display_analysis_data(n_clicks,
                     titlefont=dict(size=18, family='Arial, sans-serif'),
                     tickfont=dict(size=14, family='Arial, sans-serif'),
                     showgrid=True,
-                    gridcolor='grey',
+                    gridcolor='#D1D1D1',
                     linecolor='black',
                     mirror=True
                 ),
@@ -2151,9 +2230,9 @@ def display_analysis_data(n_clicks,
                         y=data["F-We"].max(),
                         text="N [MMStb]: {:.2f}".format(slope / 1000000),
                         showarrow=True,
-                        arrowhead=2,
-                        ax=0,
-                        ay=-40,
+                        #arrowhead=2,
+                        #ax=0,
+                        #ay=-40,
                         font=dict(size=12, color='black'),
                         bgcolor='yellow',
                         bordercolor='black'
@@ -2197,8 +2276,7 @@ def display_analysis_data(n_clicks,
                     titlefont=dict(size=18, family='Arial, sans-serif'),
                     tickfont=dict(size=14, family='Arial, sans-serif'),
                     showgrid=True,
-                    gridcolor='lightgrey',
-                    zerolinecolor='black',
+                    gridcolor='#D1D1D1',
                     linecolor='black',
                     mirror=True
                 ),
@@ -2207,8 +2285,7 @@ def display_analysis_data(n_clicks,
                     titlefont=dict(size=18, family='Arial, sans-serif'),
                     tickfont=dict(size=14, family='Arial, sans-serif'),
                     showgrid=True,
-                    gridcolor='lightgrey',
-                    zerolinecolor='black',
+                    gridcolor='#D1D1D1',
                     linecolor='black',
                     mirror=True
                 ),
@@ -2218,10 +2295,10 @@ def display_analysis_data(n_clicks,
                         x=data["Eo+Efw"].min(),
                         y=data["F-We"].max(),
                         text="N [MMStb]: {:.2f}".format(slope / 1000000),
-                        showarrow=True,
-                        arrowhead=2,
-                        ax=0,
-                        ay=-40,
+                        #showarrow=True,
+                        #arrowhead=2,
+                        #ax=3,
+                        #ay=-40,
                         font=dict(size=12, color='black'),
                         bgcolor='yellow',
                         bordercolor='black'
@@ -2239,14 +2316,6 @@ def display_analysis_data(n_clicks,
                     )
                 ]
             )
-            fig_havlena.add_trace(go.Scatter(
-                x=data["Eo+Efw"],
-                y=data["F-We"],
-                mode='markers',
-                marker=dict(color='blue', size=10),
-                name='Data Points'
-            ))
-
         '--------------- Observed Pressure vs Time Plot --------------------'
         df_press = global_analysis.tank_class.get_pressure_df()
         df_press["START_DATETIME"] = pd.to_datetime(df_press['START_DATETIME'])
@@ -2261,35 +2330,40 @@ def display_analysis_data(n_clicks,
             y=df_press['PRESSURE_DATUM'],
             mode='markers',
             marker=dict(color='green'),
-            name='Pressure'
+            name='Observed Pressure',
         ))
 
         # Set title and labels
         fig_p_vs_t.update_layout(
             title=f"Pressure per Date",
-            xaxis_title='Date',
-            yaxis_title='Pressure [PSI]',
+            xaxis=dict(
+                title='Date',
+                titlefont=dict(size=18, family='Arial, sans-serif'),
+                tickfont=dict(size=14, family='Arial, sans-serif'),
+                showgrid=True,
+                gridcolor='#D1D1D1',
+                linecolor='black',
+                mirror=True,
+                type='date'
+            ),
+            yaxis=dict(
+                title='Pressure [PSI]',
+                titlefont=dict(size=18, family='Arial, sans-serif'),
+                tickfont=dict(size=14, family='Arial, sans-serif'),
+                showgrid=True,
+                gridcolor='#D1D1D1',
+                linecolor='black',
+                mirror=True
+            ),
             template='plotly_white',
             annotations=[
-                go.layout.Annotation(
-                    x=df_press['START_DATETIME'].min(),
-                    y=df_press['PRESSURE_DATUM'].max(),
-                    text="Pressure data points over time",
-                    showarrow=True,
-                    arrowhead=2,
-                    ax=0,
-                    ay=-40,
-                    font=dict(size=12, color='black'),
-                    bgcolor='white',
-                    bordercolor='black'
-                ),
                 go.layout.Annotation(
                     text="Observed Pressure vs Time",
                     xref="paper",
                     yref="paper",
                     x=0.5,
                     xanchor="center",
-                    y=1.05,
+                    y=1.15,
                     yanchor="top",
                     showarrow=False,
                     font=dict(size=22)
@@ -2334,30 +2408,35 @@ def display_analysis_data(n_clicks,
 
         # Update layout for the plot
         fig_avg_vs_t.update_layout(
-            title=f"Pressure per Date",
-            xaxis_title='Date',
-            yaxis_title='Average Pressure [PSI]',
+            title=f"Average Pressure per Date",
+            xaxis=dict(
+                title='Date',
+                titlefont=dict(size=18, family='Arial, sans-serif'),
+                tickfont=dict(size=14, family='Arial, sans-serif'),
+                showgrid=True,
+                gridcolor='#D1D1D1',
+                linecolor='black',
+                mirror=True,
+                type='date'
+            ),
+            yaxis=dict(
+                title='Average Pressure [PSI]',
+                titlefont=dict(size=18, family='Arial, sans-serif'),
+                tickfont=dict(size=14, family='Arial, sans-serif'),
+                showgrid=True,
+                gridcolor='#D1D1D1',
+                linecolor='black',
+                mirror=True
+            ),
             template='plotly_white',
             annotations=[
-                go.layout.Annotation(
-                    x=df_press_avg['START_DATETIME'].min(),
-                    y=df_press_avg['PRESSURE_DATUM'].max(),
-                    text="Average pressure data points over time",
-                    showarrow=True,
-                    arrowhead=2,
-                    ax=0,
-                    ay=-40,
-                    font=dict(size=12, color='black'),
-                    bgcolor='white',
-                    bordercolor='black'
-                ),
                 go.layout.Annotation(
                     text=f"Average Pressure vs Time of {global_analysis.tank_class.name.replace('_', ' ').upper()}",
                     xref="paper",
                     yref="paper",
                     x=0.5,
                     xanchor="center",
-                    y=1.05,
+                    y=1.15,
                     yanchor="top",
                     showarrow=False,
                     font=dict(size=22)
@@ -2396,29 +2475,34 @@ def display_analysis_data(n_clicks,
         # Update layout for the plot
         fig_fr_time.update_layout(
             title="Production Rates vs Time",
-            xaxis_title='Date',
-            yaxis_title='Flow Rate [Stb/year]',
+            xaxis=dict(
+                title='Date',
+                titlefont=dict(size=18, family='Arial, sans-serif'),
+                tickfont=dict(size=14, family='Arial, sans-serif'),
+                showgrid=True,
+                gridcolor='#D1D1D1',
+                linecolor='black',
+                mirror=True,
+                type='date'
+            ),
+            yaxis=dict(
+                title='Flow Rate [Stb/year]',
+                titlefont=dict(size=18, family='Arial, sans-serif'),
+                tickfont=dict(size=14, family='Arial, sans-serif'),
+                showgrid=True,
+                gridcolor='#D1D1D1',
+                linecolor='black',
+                mirror=True
+            ),
             template='plotly_white',
             annotations=[
-                go.layout.Annotation(
-                    x=df_prod['START_DATETIME'].min(),
-                    y=df_prod['OIL_RATE'].max(),
-                    text="Production rates over time",
-                    showarrow=True,
-                    arrowhead=2,
-                    ax=0,
-                    ay=-40,
-                    font=dict(size=12, color='black'),
-                    bgcolor='white',
-                    bordercolor='black'
-                ),
                 go.layout.Annotation(
                     text=f"Flow Rate vs Time (Tank) of {global_analysis.tank_class.name.replace('_', ' ').upper()}",
                     xref="paper",
                     yref="paper",
                     x=0.5,
                     xanchor="center",
-                    y=1.05,
+                    y=1.15,
                     yanchor="top",
                     showarrow=False,
                     font=dict(size=22)
@@ -2452,8 +2536,24 @@ def display_analysis_data(n_clicks,
         # Update layout for the plot
         fig_avg_pressure.update_layout(
             title=f"Average Pressure vs Cumulative Production",
-            xaxis_title='Average Pressure',
-            yaxis_title='Cumulative Production',
+            xaxis=dict(
+                title='Average Pressure',
+                titlefont=dict(size=18, family='Arial, sans-serif'),
+                tickfont=dict(size=14, family='Arial, sans-serif'),
+                showgrid=True,
+                gridcolor='#D1D1D1',
+                linecolor='black',
+                mirror=True
+            ),
+            yaxis=dict(
+                title='Cumulative Production',
+                titlefont=dict(size=18, family='Arial, sans-serif'),
+                tickfont=dict(size=14, family='Arial, sans-serif'),
+                showgrid=True,
+                gridcolor='#D1D1D1',
+                linecolor='black',
+                mirror=True
+            ),
             template='plotly_white',
             annotations=[
                 go.layout.Annotation(
@@ -2462,7 +2562,7 @@ def display_analysis_data(n_clicks,
                     yref="paper",
                     x=0.5,
                     xanchor="center",
-                    y=1.05,
+                    y=1.15,
                     yanchor="top",
                     showarrow=False,
                     font=dict(size=22)
@@ -2496,12 +2596,39 @@ def display_analysis_data(n_clicks,
         # Update layout for the plot
         fig_cum_time.update_layout(
             title=f"Cumulative Production per Date - {global_analysis.tank_class.name.replace('_', ' ').upper()}",
-            xaxis_title='Date',
-            yaxis_title='Cumulative Production [MMStb]',
+            xaxis=dict(
+                title='Date',
+                titlefont=dict(size=18, family='Arial, sans-serif'),
+                tickfont=dict(size=14, family='Arial, sans-serif'),
+                showgrid=True,
+                gridcolor='#D1D1D1',
+                linecolor='black',
+                mirror=True,
+                type='date'
+            ),
+            yaxis=dict(
+                title='Cumulative Production',
+                titlefont=dict(size=18, family='Arial, sans-serif'),
+                tickfont=dict(size=14, family='Arial, sans-serif'),
+                showgrid=True,
+                gridcolor='#D1D1D1',
+                linecolor='black',
+                mirror=True
+            ),
             template='plotly_white',
-            legend=dict(x=0.01, y=0.99, bordercolor='black', borderwidth=1),
-            margin=dict(l=40, r=40, b=40, t=40),
-            hovermode='closest'
+            annotations=[
+                go.layout.Annotation(
+                    text=f" Cumulative vs Time (Tank) of  {global_analysis.tank_class.name.replace('_', ' ').upper()}",
+                    xref="paper",
+                    yref="paper",
+                    x=0.5,
+                    xanchor="center",
+                    y=1.15,
+                    yanchor="top",
+                    showarrow=False,
+                    font=dict(size=22)
+                )
+            ]
         )
 
         "--------------- Flow rate vs Time (by Well) -------------------"
@@ -2542,11 +2669,39 @@ def display_analysis_data(n_clicks,
 
         fig_fr_well.update_layout(
             title=f"Flow Rate vs Time by Well - {global_analysis.tank_class.name.replace('_', ' ').upper()}",
-            xaxis_title='Date',
-            yaxis_title='Flow Rate [Stb/year]',
+            xaxis=dict(
+                title='Date',
+                titlefont=dict(size=18, family='Arial, sans-serif'),
+                tickfont=dict(size=14, family='Arial, sans-serif'),
+                showgrid=True,
+                gridcolor='#D1D1D1',
+                linecolor='black',
+                mirror=True,
+                type='date'
+            ),
+            yaxis=dict(
+                title='Flow Rate [Stb/year]',
+                titlefont=dict(size=18, family='Arial, sans-serif'),
+                tickfont=dict(size=14, family='Arial, sans-serif'),
+                showgrid=True,
+                gridcolor='#D1D1D1',
+                linecolor='black',
+                mirror=True
+            ),
             template='plotly_white',
-            legend=dict(x=0.01, y=0.99, bordercolor='black', borderwidth=1),
-            margin=dict(l=40, r=40, b=40, t=40)
+            annotations=[
+                go.layout.Annotation(
+                    text=f"Flow rate vs Time (by Well) of {global_analysis.tank_class.name.replace('_', ' ').upper()}",
+                    xref="paper",
+                    yref="paper",
+                    x=0.5,
+                    xanchor="center",
+                    y=1.15,
+                    yanchor="top",
+                    showarrow=False,
+                    font=dict(size=22)
+                )
+            ]
         )
 
         "------------------- Cumulative per Well --------------------"
@@ -2586,12 +2741,39 @@ def display_analysis_data(n_clicks,
         # Update layout
         fig_cum_well.update_layout(
             title=f"Cumulative Production per Well - {global_analysis.tank_class.name.replace('_', ' ').upper()}",
-            xaxis_title='Well',
-            yaxis_title='Cumulative Production [Stb]',
+            xaxis=dict(
+                title='Well',
+                titlefont=dict(size=18, family='Arial, sans-serif'),
+                tickfont=dict(size=14, family='Arial, sans-serif'),
+                showgrid=True,
+                gridcolor='#D1D1D1',
+                linecolor='black',
+                mirror=True
+            ),
+            yaxis=dict(
+                title='Cumulative Production [Stb]',
+                titlefont=dict(size=18, family='Arial, sans-serif'),
+                tickfont=dict(size=14, family='Arial, sans-serif'),
+                showgrid=True,
+                gridcolor='#D1D1D1',
+                linecolor='black',
+                mirror=True
+            ),
             barmode='group',
             template='plotly_white',
-            legend=dict(x=0.01, y=0.99, bordercolor='black', borderwidth=1),
-            margin=dict(l=40, r=40, b=40, t=40)
+            annotations=[
+                go.layout.Annotation(
+                    text=f"Cumulative Production per Well of {global_analysis.tank_class.name.replace('_', ' ').upper()}",
+                    xref="paper",
+                    yref="paper",
+                    x=0.5,
+                    xanchor="center",
+                    y=1.15,
+                    yanchor="top",
+                    showarrow=False,
+                    font=dict(size=22)
+                )
+            ]
         )
 
         '----------------------- OPTIONS ------------------------------------'
@@ -2622,11 +2804,27 @@ def display_analysis_data(n_clicks,
 
             fig_analytic.update_layout(
                 title=f"Analytic Method of {global_analysis.tank_class.name.replace('_', ' ').upper()}",
-                xaxis_title='Time (Years)',
-                yaxis_title='Pressure (PSI)',
+                xaxis=dict(
+                    title='Time (Years)',
+                    titlefont=dict(size=18, family='Arial, sans-serif'),
+                    tickfont=dict(size=14, family='Arial, sans-serif'),
+                    showgrid=True,
+                    gridcolor='#D1D1D1',
+                    linecolor='black',
+                    mirror=True,
+                    type='date'
+                ),
+                yaxis=dict(
+                    title='Pressure (PSI)',
+                    titlefont=dict(size=18, family='Arial, sans-serif'),
+                    tickfont=dict(size=14, family='Arial, sans-serif'),
+                    showgrid=True,
+                    gridcolor='#D1D1D1',
+                    linecolor='black',
+                    mirror=True,
+                    range=[0, 4000]
+                ),
                 template='plotly_white',
-                yaxis=dict(range=[0, 4000]),
-                xaxis=dict(type='date'),
                 annotations=[
                     go.layout.Annotation(
                         text="Pressure vs Time with Model Name",
@@ -2634,7 +2832,7 @@ def display_analysis_data(n_clicks,
                         yref="paper",
                         x=0.5,
                         xanchor="center",
-                        y=1.05,
+                        y=1.15,
                         yanchor="top",
                         showarrow=False,
                         font=dict(size=22)
@@ -2652,7 +2850,7 @@ def display_analysis_data(n_clicks,
                     'display': 'flex',
                     'flexDirection': 'column',
                     'overflowY': 'auto',
-                    'maxHeight': 'calc(100vh - 250px)'
+                    'maxHeight': 'calc(100vh - 400px)'
                 })
             elif graphic == 'Avg Pressure vs Time':
                 return html.Div([
@@ -2664,7 +2862,7 @@ def display_analysis_data(n_clicks,
                     'display': 'flex',
                     'flexDirection': 'column',
                     'overflowY': 'auto',
-                    'maxHeight': 'calc(100vh - 250px)'
+                    'maxHeight': 'calc(100vh - 400px)'
                 })
             elif graphic == 'Flow Rate vs Time (Tank)':
                 return html.Div([
@@ -2676,7 +2874,7 @@ def display_analysis_data(n_clicks,
                     'display': 'flex',
                     'flexDirection': 'column',
                     'overflowY': 'auto',
-                    'maxHeight': 'calc(100vh - 250px)'
+                    'maxHeight': 'calc(100vh - 400px)'
                 })
             elif graphic == 'Cumulative Production vs Pressure':
                 return html.Div([
@@ -2688,7 +2886,7 @@ def display_analysis_data(n_clicks,
                     'display': 'flex',
                     'flexDirection': 'column',
                     'overflowY': 'auto',
-                    'maxHeight': 'calc(100vh - 250px)'
+                    'maxHeight': 'calc(100vh - 400px)'
                 })
             elif graphic == 'Cumulative Production vs Time (Tank)':
                 return html.Div([
@@ -2700,7 +2898,7 @@ def display_analysis_data(n_clicks,
                     'display': 'flex',
                     'flexDirection': 'column',
                     'overflowY': 'auto',
-                    'maxHeight': 'calc(100vh - 250px)'
+                    'maxHeight': 'calc(100vh - 400px)'
                 })
             elif graphic == 'Flow Rate vs Time (by Well)':
                 return html.Div([
@@ -2712,7 +2910,7 @@ def display_analysis_data(n_clicks,
                     'display': 'flex',
                     'flexDirection': 'column',
                     'overflowY': 'auto',
-                    'maxHeight': 'calc(100vh - 250px)'
+                    'maxHeight': 'calc(100vh - 400px)'
                 })
             elif graphic == 'Cumulative Production per well':
                 return html.Div([
@@ -2724,7 +2922,7 @@ def display_analysis_data(n_clicks,
                     'display': 'flex',
                     'flexDirection': 'column',
                     'overflowY': 'auto',
-                    'maxHeight': 'calc(100vh - 250px)'
+                    'maxHeight': 'calc(100vh - 400px)'
                 })
 
         elif analytic_method == 'No':
@@ -2737,7 +2935,7 @@ def display_analysis_data(n_clicks,
                     'display': 'flex',
                     'flexDirection': 'column',
                     'overflowY': 'auto',
-                    'maxHeight': 'calc(100vh - 250px)'
+                    'maxHeight': 'calc(100vh - 400px)'
                 })
             elif graphic == 'Avg Pressure vs Time':
                 return html.Div([
@@ -2748,7 +2946,7 @@ def display_analysis_data(n_clicks,
                     'display': 'flex',
                     'flexDirection': 'column',
                     'overflowY': 'auto',
-                    'maxHeight': 'calc(100vh - 250px)'
+                    'maxHeight': 'calc(100vh - 400px)'
                 })
             elif graphic == 'Flow Rate vs Time (Tank)':
                 return html.Div([
@@ -2759,7 +2957,7 @@ def display_analysis_data(n_clicks,
                     'display': 'flex',
                     'flexDirection': 'column',
                     'overflowY': 'auto',
-                    'maxHeight': 'calc(100vh - 250px)'
+                    'maxHeight': 'calc(100vh - 400px)'
                 })
             elif graphic == 'Cumulative Production vs Pressure':
                 return html.Div([
@@ -2770,7 +2968,7 @@ def display_analysis_data(n_clicks,
                     'display': 'flex',
                     'flexDirection': 'column',
                     'overflowY': 'auto',
-                    'maxHeight': 'calc(100vh - 250px)'
+                    'maxHeight': 'calc(100vh - 400px)'
                 })
             elif graphic == 'Cumulative Production vs Time (Tank)':
                 return html.Div([
@@ -2781,7 +2979,7 @@ def display_analysis_data(n_clicks,
                     'display': 'flex',
                     'flexDirection': 'column',
                     'overflowY': 'auto',
-                    'maxHeight': 'calc(100vh - 250px)'
+                    'maxHeight': 'calc(100vh - 400px)'
                 })
             elif graphic == 'Flow Rate vs Time (by Well)':
                 return html.Div([
@@ -2792,7 +2990,7 @@ def display_analysis_data(n_clicks,
                     'display': 'flex',
                     'flexDirection': 'column',
                     'overflowY': 'auto',
-                    'maxHeight': 'calc(100vh - 250px)'
+                    'maxHeight': 'calc(100vh - 400px)'
                 })
             elif graphic == 'Cumulative Production per well':
                 return html.Div([
@@ -2803,7 +3001,7 @@ def display_analysis_data(n_clicks,
                     'display': 'flex',
                     'flexDirection': 'column',
                     'overflowY': 'auto',
-                    'maxHeight': 'calc(100vh - 250px)'
+                    'maxHeight': 'calc(100vh - 400px)'
                 })
 
     return html.Div(['Submit the form to see the analysis results.'])
