@@ -1,15 +1,17 @@
 import base64
 import io
+import numpy as np
+import plotly.express as px
 import plotly.graph_objs as go
 import dash
 import dash_bootstrap_components as dbc
 import pandas as pd
 import pytank as pt
+from pytank import Fetkovich, CarterTracy
 from dash import dcc, html, dash_table
 from dash.dependencies import Input, Output, State
 from scipy.stats import stats
-import numpy as np
-import plotly.express as px
+
 
 # Initialize the Dash app
 app = dash.Dash(__name__,
@@ -769,7 +771,7 @@ app.layout = html.Div([
                                         style={
                                             'textAlign': 'center',
                                             'marginTop': '0px',
-                                            'fontSize': '33px',
+                                            'fontSize': '30px',
                                             'width': '100%',
                                             'padding': '10px',
                                             'boxSizing': 'border-box',
@@ -2047,6 +2049,13 @@ def display_analysis_data(n_clicks,
             s=s,
             k=k
         )
+
+        name_aquifer = ''
+        if isinstance(global_analysis.tank_class.aquifer, Fetkovich):
+            name_aquifer = 'Fetkovich Model'
+        elif isinstance(global_analysis.tank_class.aquifer, CarterTracy):
+            name_aquifer = 'Carter Tracy Model'
+
         '--------------------- Campbell Plot ---------------------------'
         data2 = global_analysis.campbell_data()
         # Campbell Plot
@@ -2218,7 +2227,7 @@ def display_analysis_data(n_clicks,
             ))
 
             fig_havlena.update_layout(
-                title='Graphical Method',
+                title=f'Graphical Method - {name_aquifer}',
                 xaxis=dict(
                     title='Eo+Efw',
                     titlefont=dict(size=18, family='Arial, sans-serif'),
@@ -2285,7 +2294,7 @@ def display_analysis_data(n_clicks,
             ))
 
             fig_havlena.update_layout(
-                title='Graphical Method',
+                title=f'Graphical Method - {name_aquifer}',
                 xaxis=dict(
                     title='Eo+Efw',
                     titlefont=dict(size=18, family='Arial, sans-serif'),
@@ -2841,7 +2850,6 @@ def display_analysis_data(n_clicks,
                 line=dict(color='green'),
                 name='Calculated Pressure'
             ))
-
             fig_analytic.update_layout(
                 title=f"Analytic Method of {global_analysis.tank_class.name.replace('_', ' ').upper()}",
                 xaxis=dict(
@@ -2871,7 +2879,7 @@ def display_analysis_data(n_clicks,
                 template='plotly_white',
                 annotations=[
                     go.layout.Annotation(
-                        text="Pressure vs Time with Model Name",
+                        text=f"Pressure vs Time with {name_aquifer}",
                         xref="paper",
                         yref="paper",
                         x=0.5,
