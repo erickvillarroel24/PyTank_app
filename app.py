@@ -3060,5 +3060,9 @@ def display_analysis_data(n_clicks,
 
 
 "----------------------------------- Run -----------------------------------"
+# server
+server = app.server
+
+
 if __name__ == '__main__':
     app.run_server(debug=True)
