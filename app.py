@@ -37,7 +37,7 @@ app.index_string = '''
 </html>
 '''
 
-# layout of the app
+# app
 app.layout = html.Div([
     html.Div([
         html.Div([
@@ -66,7 +66,7 @@ app.layout = html.Div([
         'borderBottom': '2px solid #000',
         'paddingBottom': '0px'
     }),
-    # Layout for the Well module
+    # Well module
     html.Div([
         html.Div([
             html.H1("Well Module", style={
@@ -279,7 +279,7 @@ app.layout = html.Div([
             'overflow': 'hidden'
         }),
 
-        # Layout for the Fluid Models module
+        # Fluid Models module
         html.Div([
             html.Div([
                 html.H1("Fluid Models Module", style={
@@ -440,7 +440,7 @@ app.layout = html.Div([
                 'overflow': 'hidden'
             }),
 
-            # Layout for the Tank module
+            # Tank module
             html.Div([
                 html.Div([
                     html.H1("Tank Module", style={
@@ -1226,11 +1226,8 @@ app.layout = html.Div([
     'overflow': 'hidden'
 })
 
-# Define callbacks if needed
 "------------------------ Callback Files CSVs --------------------------------"
 
-
-# Helper function to parse uploaded CSV data
 def parse_data(contents, filename):
     content_type, content_string = contents.split(',')
     decoded = base64.b64decode(content_string)
@@ -1244,7 +1241,6 @@ def parse_data(contents, filename):
     return df
 
 
-# Combined callback for handling uploads
 @app.callback(
     [Output('prod-upload-status',
             'children'),
@@ -1280,7 +1276,7 @@ def update_upload_status(upload_prod, upload_press, upload_fluid,
         else:
             press_status = 'There was an error processing the pressure data.'
 
-    # Process fluid models data
+    # Process PVT data
     if upload_fluid:
         df_fluid = parse_data(upload_fluid, filename_fluid)
         if df_fluid is not None:
@@ -1342,7 +1338,6 @@ global_tank = None
 global_analysis = None
 
 
-# Callback to process the uploaded CSV files and user inputs
 @app.callback(
     Output('well-info-content', 'children'),
     Input('well-submit-button', 'n_clicks'),
@@ -1385,7 +1380,6 @@ def update_output_well(n_clicks, prod_content, press_content, freq_prod,
             well_names=my_wells
         )
 
-        # Display wells information
         well_info_display = []
 
         for well in global_wells_info:
@@ -1564,7 +1558,6 @@ def update_output_well(n_clicks, prod_content, press_content, freq_prod,
 "-------------------------- Callback Fluid Models --------------------------"
 
 
-# Callback to process the uploaded CSV files and user inputs (Fluid Models)
 @app.callback(
     Output('fluid-info-content',
            'children'),
@@ -1610,7 +1603,6 @@ def display_fluid_models_data(n_clicks, fluid_contents, temp_oil,
             unit=units
         )
 
-        # Get the DataFrame from the oil model
         df = global_oil_model.data_pvt
 
         return html.Div([
@@ -1763,7 +1755,6 @@ def update_output_tank(n_clicks,
             aquifer=aquifer_model
         )
 
-        # Tank Information Display
         # Tank Information Display
         tank_info_display = html.Div(
             [
@@ -2034,11 +2025,9 @@ def display_analysis_data(n_clicks,
 
         # smooth
         if smooth == 'Yes':
-            # Analysis
             smooth = True
 
         elif smooth == 'No':
-            # Analysis
             smooth = False
 
         global_analysis = pt.Analysis(
@@ -2345,10 +2334,8 @@ def display_analysis_data(n_clicks,
         df_press["START_DATETIME"] = pd.to_datetime(df_press['START_DATETIME'])
         df_press = df_press.sort_values(by='START_DATETIME')
 
-        # Create figure
         fig_p_vs_t = go.Figure()
 
-        # Add scatter plot
         fig_p_vs_t.add_trace(go.Scatter(
             x=df_press['START_DATETIME'],
             y=df_press['PRESSURE_DATUM'],
@@ -2357,7 +2344,6 @@ def display_analysis_data(n_clicks,
             name='Observed Pressure',
         ))
 
-        # Set title and labels
         fig_p_vs_t.update_layout(
             title=f"Pressure per Date",
             xaxis=dict(
@@ -2405,10 +2391,8 @@ def display_analysis_data(n_clicks,
             df_press_avg['START_DATETIME'])
         df_press_avg = df_press_avg.sort_values(by='START_DATETIME')
 
-        # Create the figure
         fig_avg_vs_t = go.Figure()
 
-        # Add traces based on the condition
         if global_analysis.smooth:
             fig_avg_vs_t.add_trace(go.Scatter(
                 x=df_press_avg['START_DATETIME'],
@@ -2433,7 +2417,6 @@ def display_analysis_data(n_clicks,
                 name='Avg Pressure'
             ))
 
-        # Update layout for the plot
         fig_avg_vs_t.update_layout(
             title=f"Average Pressure per Date",
             xaxis=dict(
@@ -2483,10 +2466,8 @@ def display_analysis_data(n_clicks,
         df_prod['OIL_RATE'] = df_prod['OIL_CUM_TANK'].diff().fillna(0)
         df_prod['WATER_RATE_COL'] = df_prod['WATER_CUM_TANK'].diff().fillna(0)
 
-        # Create the figure
         fig_fr_time = go.Figure()
 
-        # Add traces
         fig_fr_time.add_trace(go.Scatter(
             x=df_prod['START_DATETIME'],
             y=df_prod['OIL_RATE'],
@@ -2503,7 +2484,6 @@ def display_analysis_data(n_clicks,
             name='Water Flow Rate'
         ))
 
-        # Update layout for the plot
         fig_fr_time.update_layout(
             title="Production Rates vs Time",
             xaxis=dict(
@@ -2551,14 +2531,11 @@ def display_analysis_data(n_clicks,
             df_press_avg['START_DATETIME'])
         df_press_avg = df_press_avg.sort_values(by='PRESSURE_DATUM')
 
-        # Define colors and columns
         colors = ["black", "blue"]
         columns = ['OIL_CUM_TANK', 'WATER_CUM_TANK']
 
-        # Create the figure
         fig_avg_pressure = go.Figure()
 
-        # Add scatter traces for each column
         for i, col in enumerate(columns):
             fig_avg_pressure.add_trace(go.Scatter(
                 x=df_press_avg['PRESSURE_DATUM'],
@@ -2568,7 +2545,6 @@ def display_analysis_data(n_clicks,
                 name=col
             ))
 
-        # Update layout for the plot
         fig_avg_pressure.update_layout(
             title=f"Average Pressure vs Cumulative Production",
             xaxis=dict(
@@ -2615,14 +2591,11 @@ def display_analysis_data(n_clicks,
             df_press_avg['START_DATETIME'])
         df_press_avg = df_press_avg.sort_values(by='START_DATETIME')
 
-        # Create the figure
         fig_cum_time = go.Figure()
 
-        # Define colors and columns
         colors = ["black", "blue"]
         columns = ["OIL_CUM_TANK", "WATER_CUM_TANK"]
 
-        # Add traces for each column
         for i, col in enumerate(columns):
             fig_cum_time.add_trace(go.Scatter(
                 x=df_press_avg['START_DATETIME'],
@@ -2632,7 +2605,6 @@ def display_analysis_data(n_clicks,
                 name=col
             ))
 
-        # Update layout for the plot
         fig_cum_time.update_layout(
             title=f"Cumulative Production per Date - {global_analysis.tank_class.name.replace('_', ' ').upper()}",
             xaxis=dict(
@@ -2754,19 +2726,15 @@ def display_analysis_data(n_clicks,
         df_prod['START_DATETIME'] = pd.to_datetime(df_prod['START_DATETIME'])
         df_prod = df_prod.sort_values(by='START_DATETIME')
 
-        # Well Group
         df_prod_well = df_prod.groupby('WELL_BORE')[
             ['OIL_CUM', 'WATER_CUM']].sum().reset_index()
 
-        # Create the figure
         fig_cum_well = go.Figure()
 
-        # Define bar width and positions
         bar_width = 0.35
         r1 = list(range(len(df_prod_well)))
         r2 = [x + bar_width for x in r1]
 
-        # Add bar traces
         fig_cum_well.add_trace(go.Bar(
             x=df_prod_well['WELL_BORE'],
             y=df_prod_well['OIL_CUM'],
@@ -2783,7 +2751,6 @@ def display_analysis_data(n_clicks,
             width=bar_width
         ))
 
-        # Update layout
         fig_cum_well.update_layout(
             title=f"Cumulative Production per Well - {global_analysis.tank_class.name.replace('_', ' ').upper()}",
             xaxis=dict(
