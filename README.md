@@ -12,7 +12,7 @@ These are the recommendations for the correct use of this module:
 ### 3. Fluid Models Module
 These are the recommendations for the correct use of this module:
 - It is mandatory to upload a file with the PVT information for the oil. The other values will be for water.
-- Make sure to place the corresponding units: Field or English.
+- Make sure to place the corresponding units: Field or English (water)
 ### 4. Tank Module
 These are the recommendations for the correct use of this module:
 - Be sure to place the values in the specific units in each section.

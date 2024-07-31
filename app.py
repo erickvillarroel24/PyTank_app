@@ -12,7 +12,6 @@ from dash import dcc, html, dash_table
 from dash.dependencies import Input, Output, State
 from scipy.stats import stats
 
-
 # Initialize the Dash app
 app = dash.Dash(__name__,
                 external_stylesheets=[dbc.themes.BOOTSTRAP],
@@ -147,11 +146,11 @@ app.layout = html.Div([
                             id='freq-prod',
                             options=[
                                 {'label': 'None', 'value': 'None'},
-                                {'label': 'D', 'value': 'D'},
-                                {'label': 'M', 'value': 'M'},
-                                {'label': 'MS', 'value': 'MS'},
-                                {'label': 'Q', 'value': 'Q'},
-                                {'label': 'Y', 'value': 'Y'},
+                                {'label': 'Daily', 'value': 'D'},
+                                #{'label': 'Monthly', 'value': 'M'},
+                                {'label': 'Monthly', 'value': 'MS'},
+                                {'label': 'Four-month period', 'value': 'Q'},
+                                {'label': 'Annual', 'value': 'Y'},
                             ],
                             placeholder='Select frequency',
                             style={'width': '100%'}
@@ -162,11 +161,11 @@ app.layout = html.Div([
                             id='freq-press',
                             options=[
                                 {'label': 'None', 'value': 'None'},
-                                {'label': 'D', 'value': 'D'},
-                                {'label': 'M', 'value': 'M'},
-                                {'label': 'MS', 'value': 'MS'},
-                                {'label': 'Q', 'value': 'Q'},
-                                {'label': 'Y', 'value': 'Y'},
+                                {'label': 'Daily', 'value': 'D'},
+                                # {'label': 'Monthly', 'value': 'M'},
+                                {'label': 'Monthly', 'value': 'MS'},
+                                {'label': 'Four-month period', 'value': 'Q'},
+                                {'label': 'Annual', 'value': 'Y'},
                             ],
                             placeholder='Select frequency',
                             style={'width': '100%'}
@@ -252,10 +251,82 @@ app.layout = html.Div([
                         }
                     ),
                     html.Div(
+                        [
+                            html.Div([
+                                "Instruction 1: Make sure to upload the ",
+                                html.Span(
+                                    "correct file",
+                                    style={
+                                        'fontStyle': 'italic',
+                                        'fontWeight': 'bold'
+                                    }
+                                ),
+                                " with the production and pressure information in its corresponding section."
+                            ],
+                                style={
+                                    'border': '1px solid black',
+                                    'padding': '5px',
+                                    'margin': '5px',
+                                    'borderRadius': '5px',
+                                    'backgroundColor': '#F0F0F0',
+                                    'width': '100%'
+                                }
+                            ),
+                            html.Div([
+                                "Instruction 2: The frequencies of the information must be correct  ",
+                                html.Span(
+                                    "according to the data",
+                                    style={
+                                        'fontStyle': 'italic',
+                                        'fontWeight': 'bold'
+                                    }
+                                ),
+                                "  that each file has.",
+                            ],
+                                style={
+                                    'border': '1px solid black',
+                                    'padding': '5px',
+                                    'margin': '5px',
+                                    'borderRadius': '5px',
+                                    'backgroundColor': '#F0F0F0',
+                                    'width': '100%'
+                                }
+                            ),
+                            html.Div([
+                                "Instruction 3: It must add the well names ",
+                                html.Span(
+                                    "exactly as they are written",
+                                    style={
+                                        'fontStyle': 'italic',
+                                        'fontWeight': 'bold'
+                                    }
+                                ),
+                                "  in the uploaded files and does not leave ",
+                                html.Span(
+                                    "empty boxes",
+                                    style={
+                                        'fontStyle': 'italic',
+                                        'fontWeight': 'bold'
+                                    }
+                                ),
+                                " in case you do not write a well."
+                            ],
+                                style={
+                                    'border': '1px solid black',
+                                    'padding': '5px',
+                                    'margin': '5px',
+                                    'borderRadius': '5px',
+                                    'backgroundColor': '#F0F0F0',
+                                    'width': '100%'
+                                }
+                            ),
+                        ],
+                    ),
+                    html.Div(
                         id='well-info-content',
                         style={
                             'overflowY': 'auto',
-                            'maxHeight': 'calc(100vh - 140px)',
+                            'maxHeight': 'calc(100vh - 300px)',
                             'padding': '10px'
                         }
                     )
@@ -413,6 +484,57 @@ app.layout = html.Div([
                                 'textAlign': 'justify',
                                 'marginBottom': '20px'
                             }
+                        ),
+                        html.Div(
+                            [
+                                html.Div([
+                                    "Instruction 1: It is mandatory to upload a file with the ",
+                                    html.Span(
+                                        "PVT information for the oil.",
+                                        style={
+                                            'fontStyle': 'italic',
+                                            'fontWeight': 'bold'
+                                        }
+                                    ),
+                                    " The other values will be for water."
+                                ],
+                                    style={
+                                        'border': '1px solid black',
+                                        'padding': '5px',
+                                        'margin': '5px',
+                                        'borderRadius': '5px',
+                                        'backgroundColor': '#F0F0F0',
+                                        'width': '100%'
+                                    }
+                                ),
+                                html.Div([
+                                    "Instruction 2: Make sure to place the ",
+                                    html.Span(
+                                        "corresponding units:",
+                                        style={
+                                            'fontStyle': 'italic',
+                                            'fontWeight': 'bold'
+                                        }
+                                    ),
+                                    " Field or English ",
+                                    html.Span(
+                                        "(water).",
+                                        style={
+                                            'fontStyle': 'italic',
+                                            'fontWeight': 'bold'
+                                        }
+                                    ),
+                                ],
+                                    style={
+                                        'border': '1px solid black',
+                                        'padding': '5px',
+                                        'margin': '5px',
+                                        'borderRadius': '5px',
+                                        'backgroundColor': '#F0F0F0',
+                                        'width': '100%'
+                                    }
+                                ),
+                            ],
                         ),
                         html.Div(
                             id='fluid-info-content',
@@ -731,6 +853,70 @@ app.layout = html.Div([
                                 }
                             ),
                             html.Div(
+                                [
+                                    html.Div([
+                                        "Instruction 1: Be sure to place the values in the ",
+                                        html.Span(
+                                            "specific units",
+                                            style={
+                                                'fontStyle': 'italic',
+                                                'fontWeight': 'bold'
+                                            }
+                                        ),
+                                        " in each section."
+                                    ],
+                                        style={
+                                            'border': '1px solid black',
+                                            'padding': '5px',
+                                            'margin': '5px',
+                                            'borderRadius': '5px',
+                                            'backgroundColor': '#F0F0F0',
+                                            'width': '100%'
+                                        }
+                                    ),
+                                    html.Div([
+                                        "Instruction 2: First work assuming that there is ",
+                                        html.Span(
+                                            "no aquifer.",
+                                            style={
+                                                'fontStyle': 'italic',
+                                                'fontWeight': 'bold'
+                                            }
+                                        ),
+                                        " If an aquifer exists, make sure to place the appropriate model with its correct properties in the specific units.",
+                                    ],
+                                        style={
+                                            'border': '1px solid black',
+                                            'padding': '5px',
+                                            'margin': '5px',
+                                            'borderRadius': '5px',
+                                            'backgroundColor': '#F0F0F0',
+                                            'width': '100%'
+                                        }
+                                    ),
+                                    html.Div([
+                                        "Instruction 3: ",
+                                        html.Span(
+                                            "Check",
+                                            style={
+                                                'fontStyle': 'italic',
+                                                'fontWeight': 'bold'
+                                            }
+                                        ),
+                                        "  in the results section if the values entered are correct."
+                                    ],
+                                        style={
+                                            'border': '1px solid black',
+                                            'padding': '5px',
+                                            'margin': '5px',
+                                            'borderRadius': '5px',
+                                            'backgroundColor': '#F0F0F0',
+                                            'width': '100%'
+                                        }
+                                    ),
+                                ],
+                            ),
+                            html.Div(
                                 id='tank-info-content',
                                 style={
                                     'overflowY': 'auto',
@@ -781,9 +967,12 @@ app.layout = html.Div([
                                 dcc.Dropdown(
                                     id='freq-analysis',
                                     options=[
-                                        {'label': '3M', 'value': '3M'},
-                                        {'label': '6M', 'value': '6M'},
-                                        {'label': '12M', 'value': '12M'},
+                                        {'label': 'Quarterly (3 months)',
+                                         'value': '3M'},
+                                        {'label': 'Biannual (6 months)',
+                                         'value': '6M'},
+                                        {'label': 'Annual (12 months)',
+                                         'value': '12M'},
                                     ],
                                     placeholder='Select frequency',
                                     style={'width': '100%'}
@@ -1032,10 +1221,10 @@ app.layout = html.Div([
                                 dcc.Dropdown(
                                     id='graphic',
                                     options=[
+                                        {'label': 'None',
+                                         'value': 'None'},
                                         {'label': 'Observed Pressure vs Time',
                                          'value': 'Observed Pressure vs Time'},
-                                        {'label': 'Avg Pressure vs Time',
-                                         'value': 'Avg Pressure vs Time'},
                                         {'label': 'Flow Rate vs Time (Tank)',
                                          'value': 'Flow Rate vs Time (Tank)'},
                                         {'label': 'Cumulative Production '
@@ -1111,7 +1300,7 @@ app.layout = html.Div([
                                     "calculate reserves using the graphical "
                                     "and analytical method. In addition, it "
                                     "shows graphs that describe the behavior "
-                                    "of the tank or reservoir. Instructions:",
+                                    "of the tank or reservoir.",
                                     style={
                                         'fontSize': '16px',
                                         'lineHeight': '1.5',
@@ -1227,6 +1416,7 @@ app.layout = html.Div([
 })
 
 "------------------------ Callback Files CSVs --------------------------------"
+
 
 def parse_data(contents, filename):
     content_type, content_string = contents.split(',')
@@ -1605,6 +1795,17 @@ def display_fluid_models_data(n_clicks, fluid_contents, temp_oil,
 
         df = global_oil_model.data_pvt
 
+        # Add units to columns
+        df = df.rename(columns={
+            'Pressure': 'Pressure [PSI]',
+            'GOR': 'GOR [SCF/STB]',
+            'Bo': 'Bo [bbl/STB]',
+            'uo': 'uo',
+            'Bg': 'Bg [ft3/SCF]',
+        })
+
+        df = df.drop(columns=['uo'])
+
         return html.Div([
             html.H3("Fluid Models Data Results"),
             dash_table.DataTable(
@@ -1613,10 +1814,11 @@ def display_fluid_models_data(n_clicks, fluid_contents, temp_oil,
                 style_table={'overflowX': 'auto'},
                 style_header={
                     'backgroundColor': 'rgb(230, 230, 230)',
-                    'fontWeight': 'bold'
+                    'fontWeight': 'bold',
+                    'textAlignn': 'center'
                 },
                 style_cell={
-                    'textAlign': 'left',
+                    'textAlign': 'center',
                     'whiteSpace': 'normal',
                     'height': 'auto',
                 },
@@ -1873,7 +2075,7 @@ def update_output_tank(n_clicks,
             style={
                 'textAlign': 'center',
                 'position': 'relative',
-                'backgroundImage': 'url(/assets/tank_rep.png)',
+                'backgroundImage': 'url(/assets/reservoir.png)',
                 'backgroundSize': 'cover',
                 'backgroundPosition': 'center',
                 'backgroundRepeat': 'no-repeat',
@@ -1903,7 +2105,7 @@ def update_output_tank(n_clicks,
                     ],
                     style={
                         'position': 'relative',
-                        'backgroundImage': 'url(/assets/tank_rep.png)',
+                        'backgroundImage': 'url(/assets/reservoir.png)',
                         'backgroundSize': 'contain',
                         'backgroundPosition': 'center',
                         'backgroundRepeat': 'no-repeat',
@@ -2372,7 +2574,7 @@ def display_analysis_data(n_clicks,
             template='plotly_white',
             annotations=[
                 go.layout.Annotation(
-                    text="Observed Pressure vs Time",
+                    text=f"Observed Pressure vs Time fof {global_analysis.tank_class.name.replace('_', ' ').upper()}",
                     xref="paper",
                     yref="paper",
                     x=0.5,
@@ -2858,22 +3060,8 @@ def display_analysis_data(n_clicks,
                     )
                 ]
             )
-
-            if graphic == 'Observed Pressure vs Time':
+            if graphic == 'None':
                 return html.Div([
-                    dcc.Graph(figure=fig_campbell),
-                    dcc.Graph(figure=fig_havlena),
-                    dcc.Graph(figure=fig_analytic),
-                    dcc.Graph(figure=fig_p_vs_t),
-                ], style={
-                    'display': 'flex',
-                    'flexDirection': 'column',
-                    'overflowY': 'auto',
-                    'maxHeight': 'calc(100vh - 400px)'
-                })
-            elif graphic == 'Avg Pressure vs Time':
-                return html.Div([
-                    dcc.Graph(figure=fig_campbell),
                     dcc.Graph(figure=fig_havlena),
                     dcc.Graph(figure=fig_analytic),
                     dcc.Graph(figure=fig_avg_vs_t),
@@ -2883,11 +3071,23 @@ def display_analysis_data(n_clicks,
                     'overflowY': 'auto',
                     'maxHeight': 'calc(100vh - 400px)'
                 })
-            elif graphic == 'Flow Rate vs Time (Tank)':
+            elif graphic == 'Observed Pressure vs Time':
                 return html.Div([
-                    dcc.Graph(figure=fig_campbell),
                     dcc.Graph(figure=fig_havlena),
                     dcc.Graph(figure=fig_analytic),
+                    dcc.Graph(figure=fig_avg_vs_t),
+                    dcc.Graph(figure=fig_p_vs_t),
+                ], style={
+                    'display': 'flex',
+                    'flexDirection': 'column',
+                    'overflowY': 'auto',
+                    'maxHeight': 'calc(100vh - 400px)'
+                })
+            elif graphic == 'Flow Rate vs Time (Tank)':
+                return html.Div([
+                    dcc.Graph(figure=fig_havlena),
+                    dcc.Graph(figure=fig_analytic),
+                    dcc.Graph(figure=fig_avg_vs_t),
                     dcc.Graph(figure=fig_fr_time),
                 ], style={
                     'display': 'flex',
@@ -2897,9 +3097,9 @@ def display_analysis_data(n_clicks,
                 })
             elif graphic == 'Cumulative Production vs Pressure':
                 return html.Div([
-                    dcc.Graph(figure=fig_campbell),
                     dcc.Graph(figure=fig_havlena),
                     dcc.Graph(figure=fig_analytic),
+                    dcc.Graph(figure=fig_avg_vs_t),
                     dcc.Graph(figure=fig_avg_pressure),
                 ], style={
                     'display': 'flex',
@@ -2909,9 +3109,9 @@ def display_analysis_data(n_clicks,
                 })
             elif graphic == 'Cumulative Production vs Time (Tank)':
                 return html.Div([
-                    dcc.Graph(figure=fig_campbell),
                     dcc.Graph(figure=fig_havlena),
                     dcc.Graph(figure=fig_analytic),
+                    dcc.Graph(figure=fig_avg_vs_t),
                     dcc.Graph(figure=fig_cum_time),
                 ], style={
                     'display': 'flex',
@@ -2921,9 +3121,9 @@ def display_analysis_data(n_clicks,
                 })
             elif graphic == 'Flow Rate vs Time (by Well)':
                 return html.Div([
-                    dcc.Graph(figure=fig_campbell),
                     dcc.Graph(figure=fig_havlena),
                     dcc.Graph(figure=fig_analytic),
+                    dcc.Graph(figure=fig_avg_vs_t),
                     dcc.Graph(figure=fig_fr_well),
                 ], style={
                     'display': 'flex',
@@ -2933,9 +3133,9 @@ def display_analysis_data(n_clicks,
                 })
             elif graphic == 'Cumulative Production per well':
                 return html.Div([
-                    dcc.Graph(figure=fig_campbell),
                     dcc.Graph(figure=fig_havlena),
                     dcc.Graph(figure=fig_analytic),
+                    dcc.Graph(figure=fig_avg_vs_t),
                     dcc.Graph(figure=fig_cum_well),
                 ], style={
                     'display': 'flex',
@@ -2944,19 +3144,8 @@ def display_analysis_data(n_clicks,
                     'maxHeight': 'calc(100vh - 400px)'
                 })
 
-        elif analytic_method == 'No':
-            if graphic == 'Observed Pressure vs Time':
-                return html.Div([
-                    dcc.Graph(figure=fig_campbell),
-                    dcc.Graph(figure=fig_havlena),
-                    dcc.Graph(figure=fig_p_vs_t),
-                ], style={
-                    'display': 'flex',
-                    'flexDirection': 'column',
-                    'overflowY': 'auto',
-                    'maxHeight': 'calc(100vh - 400px)'
-                })
-            elif graphic == 'Avg Pressure vs Time':
+        elif analytic_method == 'No' and global_analysis.tank_class.aquifer is None:
+            if graphic == 'None':
                 return html.Div([
                     dcc.Graph(figure=fig_campbell),
                     dcc.Graph(figure=fig_havlena),
@@ -2967,10 +3156,23 @@ def display_analysis_data(n_clicks,
                     'overflowY': 'auto',
                     'maxHeight': 'calc(100vh - 400px)'
                 })
+            elif graphic == 'Observed Pressure vs Time':
+                return html.Div([
+                    dcc.Graph(figure=fig_campbell),
+                    dcc.Graph(figure=fig_havlena),
+                    dcc.Graph(figure=fig_avg_vs_t),
+                    dcc.Graph(figure=fig_p_vs_t),
+                ], style={
+                    'display': 'flex',
+                    'flexDirection': 'column',
+                    'overflowY': 'auto',
+                    'maxHeight': 'calc(100vh - 400px)'
+                })
             elif graphic == 'Flow Rate vs Time (Tank)':
                 return html.Div([
                     dcc.Graph(figure=fig_campbell),
                     dcc.Graph(figure=fig_havlena),
+                    dcc.Graph(figure=fig_avg_vs_t),
                     dcc.Graph(figure=fig_fr_time),
                 ], style={
                     'display': 'flex',
@@ -2982,6 +3184,7 @@ def display_analysis_data(n_clicks,
                 return html.Div([
                     dcc.Graph(figure=fig_campbell),
                     dcc.Graph(figure=fig_havlena),
+                    dcc.Graph(figure=fig_avg_vs_t),
                     dcc.Graph(figure=fig_avg_pressure),
                 ], style={
                     'display': 'flex',
@@ -2993,6 +3196,7 @@ def display_analysis_data(n_clicks,
                 return html.Div([
                     dcc.Graph(figure=fig_campbell),
                     dcc.Graph(figure=fig_havlena),
+                    dcc.Graph(figure=fig_avg_vs_t),
                     dcc.Graph(figure=fig_cum_time),
                 ], style={
                     'display': 'flex',
@@ -3004,6 +3208,7 @@ def display_analysis_data(n_clicks,
                 return html.Div([
                     dcc.Graph(figure=fig_campbell),
                     dcc.Graph(figure=fig_havlena),
+                    dcc.Graph(figure=fig_avg_vs_t),
                     dcc.Graph(figure=fig_fr_well),
                 ], style={
                     'display': 'flex',
@@ -3015,6 +3220,88 @@ def display_analysis_data(n_clicks,
                 return html.Div([
                     dcc.Graph(figure=fig_campbell),
                     dcc.Graph(figure=fig_havlena),
+                    dcc.Graph(figure=fig_avg_vs_t),
+                    dcc.Graph(figure=fig_cum_well),
+                ], style={
+                    'display': 'flex',
+                    'flexDirection': 'column',
+                    'overflowY': 'auto',
+                    'maxHeight': 'calc(100vh - 400px)'
+                })
+
+        elif (analytic_method == 'No'
+              and (isinstance(global_analysis.tank_class.aquifer, Fetkovich)
+                   or isinstance(global_analysis.tank_class.aquifer,
+                                 CarterTracy))):
+            if graphic == 'None':
+                return html.Div([
+                    dcc.Graph(figure=fig_havlena),
+                    dcc.Graph(figure=fig_avg_vs_t),
+                ], style={
+                    'display': 'flex',
+                    'flexDirection': 'column',
+                    'overflowY': 'auto',
+                    'maxHeight': 'calc(100vh - 400px)'
+                })
+            elif graphic == 'Observed Pressure vs Time':
+                return html.Div([
+                    dcc.Graph(figure=fig_havlena),
+                    dcc.Graph(figure=fig_avg_vs_t),
+                    dcc.Graph(figure=fig_p_vs_t),
+                ], style={
+                    'display': 'flex',
+                    'flexDirection': 'column',
+                    'overflowY': 'auto',
+                    'maxHeight': 'calc(100vh - 400px)'
+                })
+            elif graphic == 'Flow Rate vs Time (Tank)':
+                return html.Div([
+                    dcc.Graph(figure=fig_havlena),
+                    dcc.Graph(figure=fig_avg_vs_t),
+                    dcc.Graph(figure=fig_fr_time),
+                ], style={
+                    'display': 'flex',
+                    'flexDirection': 'column',
+                    'overflowY': 'auto',
+                    'maxHeight': 'calc(100vh - 400px)'
+                })
+            elif graphic == 'Cumulative Production vs Pressure':
+                return html.Div([
+                    dcc.Graph(figure=fig_havlena),
+                    dcc.Graph(figure=fig_avg_vs_t),
+                    dcc.Graph(figure=fig_avg_pressure),
+                ], style={
+                    'display': 'flex',
+                    'flexDirection': 'column',
+                    'overflowY': 'auto',
+                    'maxHeight': 'calc(100vh - 400px)'
+                })
+            elif graphic == 'Cumulative Production vs Time (Tank)':
+                return html.Div([
+                    dcc.Graph(figure=fig_havlena),
+                    dcc.Graph(figure=fig_avg_vs_t),
+                    dcc.Graph(figure=fig_cum_time),
+                ], style={
+                    'display': 'flex',
+                    'flexDirection': 'column',
+                    'overflowY': 'auto',
+                    'maxHeight': 'calc(100vh - 400px)'
+                })
+            elif graphic == 'Flow Rate vs Time (by Well)':
+                return html.Div([
+                    dcc.Graph(figure=fig_havlena),
+                    dcc.Graph(figure=fig_avg_vs_t),
+                    dcc.Graph(figure=fig_fr_well),
+                ], style={
+                    'display': 'flex',
+                    'flexDirection': 'column',
+                    'overflowY': 'auto',
+                    'maxHeight': 'calc(100vh - 400px)'
+                })
+            elif graphic == 'Cumulative Production per well':
+                return html.Div([
+                    dcc.Graph(figure=fig_havlena),
+                    dcc.Graph(figure=fig_avg_vs_t),
                     dcc.Graph(figure=fig_cum_well),
                 ], style={
                     'display': 'flex',
@@ -3029,7 +3316,6 @@ def display_analysis_data(n_clicks,
 "----------------------------------- Run -----------------------------------"
 # server
 server = app.server
-
 
 if __name__ == '__main__':
     app.run_server(debug=True)
